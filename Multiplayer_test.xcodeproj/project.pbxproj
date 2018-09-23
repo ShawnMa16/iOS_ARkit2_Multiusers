@@ -7,14 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		296A126C2156D5A800CEA924 /* Assets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 296A126B2156D5A800CEA924 /* Assets.scnassets */; };
+		296A12702156E06A00CEA924 /* FourSquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296A126F2156E06A00CEA924 /* FourSquare.swift */; };
+		296A12722156E09000CEA924 /* FourSquareSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296A12712156E09000CEA924 /* FourSquareSegment.swift */; };
+		296A12752156E17C00CEA924 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296A12742156E17C00CEA924 /* Utilities.swift */; };
+		296A12772157274400CEA924 /* MultipeerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296A12762157274300CEA924 /* MultipeerSession.swift */; };
 		29F99D372156B56C00906078 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F99D362156B56C00906078 /* AppDelegate.swift */; };
 		29F99D392156B56C00906078 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F99D382156B56C00906078 /* ViewController.swift */; };
 		29F99D3C2156B56C00906078 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29F99D3A2156B56C00906078 /* Main.storyboard */; };
 		29F99D3E2156B56D00906078 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29F99D3D2156B56D00906078 /* Assets.xcassets */; };
 		29F99D412156B56D00906078 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29F99D3F2156B56D00906078 /* LaunchScreen.storyboard */; };
+		29F99D4B2156C27000906078 /* AnalogJoystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F99D4A2156C27000906078 /* AnalogJoystick.swift */; };
+		29F99D4F2156C37A00906078 /* ARJoystickSKScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F99D4E2156C37900906078 /* ARJoystickSKScene.swift */; };
+		29F99D512156C3F800906078 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F99D502156C3F800906078 /* Constants.swift */; };
+		51F0A99970493AF01A66F24E /* Pods_Multiplayer_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1049F67FBC93C43825CF293 /* Pods_Multiplayer_test.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		296A126B2156D5A800CEA924 /* Assets.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Assets.scnassets; sourceTree = "<group>"; };
+		296A126F2156E06A00CEA924 /* FourSquare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourSquare.swift; sourceTree = "<group>"; };
+		296A12712156E09000CEA924 /* FourSquareSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourSquareSegment.swift; sourceTree = "<group>"; };
+		296A12742156E17C00CEA924 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		296A12762157274300CEA924 /* MultipeerSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipeerSession.swift; sourceTree = "<group>"; };
 		29F99D332156B56C00906078 /* Multiplayer_test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Multiplayer_test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29F99D362156B56C00906078 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		29F99D382156B56C00906078 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +36,12 @@
 		29F99D3D2156B56D00906078 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		29F99D402156B56D00906078 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		29F99D422156B56D00906078 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		29F99D4A2156C27000906078 /* AnalogJoystick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalogJoystick.swift; sourceTree = "<group>"; };
+		29F99D4E2156C37900906078 /* ARJoystickSKScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARJoystickSKScene.swift; sourceTree = "<group>"; };
+		29F99D502156C3F800906078 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		4ABB4EFD02479B61CA09FAE8 /* Pods-Multiplayer_test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Multiplayer_test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Multiplayer_test/Pods-Multiplayer_test.debug.xcconfig"; sourceTree = "<group>"; };
+		C26B1EC62EAA7DFC98D7E9E3 /* Pods-Multiplayer_test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Multiplayer_test.release.xcconfig"; path = "Pods/Target Support Files/Pods-Multiplayer_test/Pods-Multiplayer_test.release.xcconfig"; sourceTree = "<group>"; };
+		D1049F67FBC93C43825CF293 /* Pods_Multiplayer_test.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Multiplayer_test.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +49,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51F0A99970493AF01A66F24E /* Pods_Multiplayer_test.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		296A12732156E09A00CEA924 /* Four Square */ = {
+			isa = PBXGroup;
+			children = (
+				296A12742156E17C00CEA924 /* Utilities.swift */,
+				296A126F2156E06A00CEA924 /* FourSquare.swift */,
+				296A12712156E09000CEA924 /* FourSquareSegment.swift */,
+			);
+			path = "Four Square";
+			sourceTree = "<group>";
+		};
 		29F99D2A2156B56C00906078 = {
 			isa = PBXGroup;
 			children = (
 				29F99D352156B56C00906078 /* Multiplayer_test */,
 				29F99D342156B56C00906078 /* Products */,
+				8C6790CB7920C6CB6C84DA14 /* Pods */,
+				792CDF797528139D6E352530 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,11 +90,34 @@
 				29F99D362156B56C00906078 /* AppDelegate.swift */,
 				29F99D382156B56C00906078 /* ViewController.swift */,
 				29F99D3A2156B56C00906078 /* Main.storyboard */,
+				296A12762157274300CEA924 /* MultipeerSession.swift */,
+				296A12732156E09A00CEA924 /* Four Square */,
+				296A126B2156D5A800CEA924 /* Assets.scnassets */,
 				29F99D3D2156B56D00906078 /* Assets.xcassets */,
+				29F99D4E2156C37900906078 /* ARJoystickSKScene.swift */,
+				29F99D4A2156C27000906078 /* AnalogJoystick.swift */,
+				29F99D502156C3F800906078 /* Constants.swift */,
 				29F99D3F2156B56D00906078 /* LaunchScreen.storyboard */,
 				29F99D422156B56D00906078 /* Info.plist */,
 			);
 			path = Multiplayer_test;
+			sourceTree = "<group>";
+		};
+		792CDF797528139D6E352530 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D1049F67FBC93C43825CF293 /* Pods_Multiplayer_test.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8C6790CB7920C6CB6C84DA14 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4ABB4EFD02479B61CA09FAE8 /* Pods-Multiplayer_test.debug.xcconfig */,
+				C26B1EC62EAA7DFC98D7E9E3 /* Pods-Multiplayer_test.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +127,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 29F99D452156B56D00906078 /* Build configuration list for PBXNativeTarget "Multiplayer_test" */;
 			buildPhases = (
+				B5312B2BFB4A5EB0B5F36A7D /* [CP] Check Pods Manifest.lock */,
+				29F99D492156B8BA00906078 /* ShellScript */,
 				29F99D2F2156B56C00906078 /* Sources */,
 				29F99D302156B56C00906078 /* Frameworks */,
 				29F99D312156B56C00906078 /* Resources */,
+				222893A584CBB1669CA7050D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -122,6 +181,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				296A126C2156D5A800CEA924 /* Assets.scnassets in Resources */,
 				29F99D412156B56D00906078 /* LaunchScreen.storyboard in Resources */,
 				29F99D3E2156B56D00906078 /* Assets.xcassets in Resources */,
 				29F99D3C2156B56C00906078 /* Main.storyboard in Resources */,
@@ -130,12 +190,77 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		222893A584CBB1669CA7050D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Multiplayer_test/Pods-Multiplayer_test-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/R.swift.Library/Rswift.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Rswift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Multiplayer_test/Pods-Multiplayer_test-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		29F99D492156B8BA00906078 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT\"\n";
+		};
+		B5312B2BFB4A5EB0B5F36A7D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Multiplayer_test-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		29F99D2F2156B56C00906078 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				296A12722156E09000CEA924 /* FourSquareSegment.swift in Sources */,
+				29F99D512156C3F800906078 /* Constants.swift in Sources */,
 				29F99D392156B56C00906078 /* ViewController.swift in Sources */,
+				296A12772157274400CEA924 /* MultipeerSession.swift in Sources */,
+				296A12702156E06A00CEA924 /* FourSquare.swift in Sources */,
+				29F99D4F2156C37A00906078 /* ARJoystickSKScene.swift in Sources */,
+				29F99D4B2156C27000906078 /* AnalogJoystick.swift in Sources */,
+				296A12752156E17C00CEA924 /* Utilities.swift in Sources */,
 				29F99D372156B56C00906078 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,6 +405,7 @@
 		};
 		29F99D462156B56D00906078 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4ABB4EFD02479B61CA09FAE8 /* Pods-Multiplayer_test.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -298,6 +424,7 @@
 		};
 		29F99D472156B56D00906078 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C26B1EC62EAA7DFC98D7E9E3 /* Pods-Multiplayer_test.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
