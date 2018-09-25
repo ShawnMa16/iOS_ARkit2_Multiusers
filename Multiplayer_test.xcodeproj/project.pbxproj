@@ -7,11 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		292F9E2C21596AEE00620074 /* BitStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292F9E2A21596AEE00620074 /* BitStream.swift */; };
+		292F9E2D21596AEE00620074 /* BitStreamCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292F9E2B21596AEE00620074 /* BitStreamCodable.swift */; };
 		296A126C2156D5A800CEA924 /* Assets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 296A126B2156D5A800CEA924 /* Assets.scnassets */; };
 		296A12702156E06A00CEA924 /* FourSquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296A126F2156E06A00CEA924 /* FourSquare.swift */; };
 		296A12722156E09000CEA924 /* FourSquareSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296A12712156E09000CEA924 /* FourSquareSegment.swift */; };
 		296A12752156E17C00CEA924 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296A12742156E17C00CEA924 /* Utilities.swift */; };
 		296A12772157274400CEA924 /* MultipeerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 296A12762157274300CEA924 /* MultipeerSession.swift */; };
+		29AAD801215A949300516A80 /* GameCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AAD800215A949300516A80 /* GameCommand.swift */; };
+		29AAD804215A94CF00516A80 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AAD803215A94CF00516A80 /* Player.swift */; };
+		29F2D21D2159844B00AF7381 /* ConvientMovementData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F2D21C2159844B00AF7381 /* ConvientMovementData.swift */; };
 		29F99D372156B56C00906078 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F99D362156B56C00906078 /* AppDelegate.swift */; };
 		29F99D392156B56C00906078 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F99D382156B56C00906078 /* ViewController.swift */; };
 		29F99D3C2156B56C00906078 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29F99D3A2156B56C00906078 /* Main.storyboard */; };
@@ -24,11 +29,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		292F9E2A21596AEE00620074 /* BitStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitStream.swift; sourceTree = "<group>"; };
+		292F9E2B21596AEE00620074 /* BitStreamCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitStreamCodable.swift; sourceTree = "<group>"; };
 		296A126B2156D5A800CEA924 /* Assets.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Assets.scnassets; sourceTree = "<group>"; };
 		296A126F2156E06A00CEA924 /* FourSquare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourSquare.swift; sourceTree = "<group>"; };
 		296A12712156E09000CEA924 /* FourSquareSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourSquareSegment.swift; sourceTree = "<group>"; };
 		296A12742156E17C00CEA924 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		296A12762157274300CEA924 /* MultipeerSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipeerSession.swift; sourceTree = "<group>"; };
+		29AAD800215A949300516A80 /* GameCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCommand.swift; sourceTree = "<group>"; };
+		29AAD803215A94CF00516A80 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		29F2D21C2159844B00AF7381 /* ConvientMovementData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvientMovementData.swift; sourceTree = "<group>"; };
 		29F99D332156B56C00906078 /* Multiplayer_test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Multiplayer_test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29F99D362156B56C00906078 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		29F99D382156B56C00906078 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +66,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		292F9E2E21596AF500620074 /* Bit Stream */ = {
+			isa = PBXGroup;
+			children = (
+				292F9E2A21596AEE00620074 /* BitStream.swift */,
+				292F9E2B21596AEE00620074 /* BitStreamCodable.swift */,
+			);
+			path = "Bit Stream";
+			sourceTree = "<group>";
+		};
 		296A12732156E09A00CEA924 /* Four Square */ = {
 			isa = PBXGroup;
 			children = (
@@ -64,6 +83,25 @@
 				296A12712156E09000CEA924 /* FourSquareSegment.swift */,
 			);
 			path = "Four Square";
+			sourceTree = "<group>";
+		};
+		296A1278215727B400CEA924 /* Joystick */ = {
+			isa = PBXGroup;
+			children = (
+				29F99D4E2156C37900906078 /* ARJoystickSKScene.swift */,
+				29F99D4A2156C27000906078 /* AnalogJoystick.swift */,
+			);
+			path = Joystick;
+			sourceTree = "<group>";
+		};
+		29AAD802215A949900516A80 /* Local Networking */ = {
+			isa = PBXGroup;
+			children = (
+				296A12762157274300CEA924 /* MultipeerSession.swift */,
+				29AAD803215A94CF00516A80 /* Player.swift */,
+				29AAD800215A949300516A80 /* GameCommand.swift */,
+			);
+			path = "Local Networking";
 			sourceTree = "<group>";
 		};
 		29F99D2A2156B56C00906078 = {
@@ -89,13 +127,14 @@
 			children = (
 				29F99D362156B56C00906078 /* AppDelegate.swift */,
 				29F99D382156B56C00906078 /* ViewController.swift */,
+				29F2D21C2159844B00AF7381 /* ConvientMovementData.swift */,
 				29F99D3A2156B56C00906078 /* Main.storyboard */,
-				296A12762157274300CEA924 /* MultipeerSession.swift */,
+				29AAD802215A949900516A80 /* Local Networking */,
+				292F9E2E21596AF500620074 /* Bit Stream */,
+				296A1278215727B400CEA924 /* Joystick */,
 				296A12732156E09A00CEA924 /* Four Square */,
 				296A126B2156D5A800CEA924 /* Assets.scnassets */,
 				29F99D3D2156B56D00906078 /* Assets.xcassets */,
-				29F99D4E2156C37900906078 /* ARJoystickSKScene.swift */,
-				29F99D4A2156C27000906078 /* AnalogJoystick.swift */,
 				29F99D502156C3F800906078 /* Constants.swift */,
 				29F99D3F2156B56D00906078 /* LaunchScreen.storyboard */,
 				29F99D422156B56D00906078 /* Info.plist */,
@@ -253,15 +292,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				292F9E2D21596AEE00620074 /* BitStreamCodable.swift in Sources */,
 				296A12722156E09000CEA924 /* FourSquareSegment.swift in Sources */,
 				29F99D512156C3F800906078 /* Constants.swift in Sources */,
 				29F99D392156B56C00906078 /* ViewController.swift in Sources */,
+				29AAD804215A94CF00516A80 /* Player.swift in Sources */,
 				296A12772157274400CEA924 /* MultipeerSession.swift in Sources */,
 				296A12702156E06A00CEA924 /* FourSquare.swift in Sources */,
 				29F99D4F2156C37A00906078 /* ARJoystickSKScene.swift in Sources */,
 				29F99D4B2156C27000906078 /* AnalogJoystick.swift in Sources */,
+				29F2D21D2159844B00AF7381 /* ConvientMovementData.swift in Sources */,
+				292F9E2C21596AEE00620074 /* BitStream.swift in Sources */,
 				296A12752156E17C00CEA924 /* Utilities.swift in Sources */,
 				29F99D372156B56C00906078 /* AppDelegate.swift in Sources */,
+				29AAD801215A949300516A80 /* GameCommand.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

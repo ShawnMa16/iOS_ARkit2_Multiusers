@@ -7,8 +7,25 @@ Utility functions and type extensions used throughout the projects.
 
 import Foundation
 import ARKit
+import simd
 
 // MARK: - float4x4 extensions
+
+
+extension ARFrame.WorldMappingStatus: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .notAvailable:
+            return "Not Available"
+        case .limited:
+            return "Limited"
+        case .extending:
+            return "Extending"
+        case .mapped:
+            return "Mapped"
+        }
+    }
+}
 
 extension float4x4 {
     /**
