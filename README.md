@@ -1,6 +1,6 @@
-# Project Title
+# ARKit2 Multiusers
 
-iOS ARKit2 Mutiuser implementation
+iOS ARKit2 Mutiusers implementation
 
 ## Getting Started
 

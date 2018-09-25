@@ -1,8 +1,8 @@
 #OS junk files
 [Tt]humbs.db
 *.DS_Store
-Pods
-Multiplayer_test.xcworkspace
+*Pods
+*Multiplayer_test.xcworkspace
 *Podfile.lock
 *R.generated.swift
 
