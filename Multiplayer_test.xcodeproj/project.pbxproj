@@ -19,7 +19,6 @@
 		29F2D21D2159844B00AF7381 /* ConvientMovementData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F2D21C2159844B00AF7381 /* ConvientMovementData.swift */; };
 		29F99D372156B56C00906078 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F99D362156B56C00906078 /* AppDelegate.swift */; };
 		29F99D392156B56C00906078 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F99D382156B56C00906078 /* ViewController.swift */; };
-		29F99D3C2156B56C00906078 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29F99D3A2156B56C00906078 /* Main.storyboard */; };
 		29F99D3E2156B56D00906078 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29F99D3D2156B56D00906078 /* Assets.xcassets */; };
 		29F99D412156B56D00906078 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29F99D3F2156B56D00906078 /* LaunchScreen.storyboard */; };
 		29F99D4B2156C27000906078 /* AnalogJoystick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F99D4A2156C27000906078 /* AnalogJoystick.swift */; };
@@ -42,7 +41,6 @@
 		29F99D332156B56C00906078 /* Multiplayer_test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Multiplayer_test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29F99D362156B56C00906078 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		29F99D382156B56C00906078 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		29F99D3B2156B56C00906078 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		29F99D3D2156B56D00906078 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		29F99D402156B56D00906078 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		29F99D422156B56D00906078 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -128,7 +126,6 @@
 				29F99D362156B56C00906078 /* AppDelegate.swift */,
 				29F99D382156B56C00906078 /* ViewController.swift */,
 				29F2D21C2159844B00AF7381 /* ConvientMovementData.swift */,
-				29F99D3A2156B56C00906078 /* Main.storyboard */,
 				29AAD802215A949900516A80 /* Local Networking */,
 				292F9E2E21596AF500620074 /* Bit Stream */,
 				296A1278215727B400CEA924 /* Joystick */,
@@ -223,7 +220,6 @@
 				296A126C2156D5A800CEA924 /* Assets.scnassets in Resources */,
 				29F99D412156B56D00906078 /* LaunchScreen.storyboard in Resources */,
 				29F99D3E2156B56D00906078 /* Assets.xcassets in Resources */,
-				29F99D3C2156B56C00906078 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,14 +308,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		29F99D3A2156B56C00906078 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				29F99D3B2156B56C00906078 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		29F99D3F2156B56D00906078 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -53,7 +53,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Contributing
 
-Please [EMAIL ME](emailme.mx@gmail.com) for details on our code of conduct, and the process for submitting pull requests.
+Please [emailme](mailto:emailme.mx@gmail.com) for details on our code of conduct, and the process for submitting pull requests.
 
 ## Versioning
 
