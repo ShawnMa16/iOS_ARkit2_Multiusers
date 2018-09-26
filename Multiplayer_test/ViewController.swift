@@ -87,6 +87,7 @@ class ViewController: UIViewController {
     
     var multipeerSession: MultipeerSession!
     var mapHasInited: Bool = false
+    var mapProvider: MCPeerID?
     
     var gameState: GameState = .shouldInit
     var gameWorldCenterTransform: SCNMatrix4 = SCNMatrix4Identity
@@ -94,6 +95,14 @@ class ViewController: UIViewController {
     var tankTemplateNode: SCNNode!
     var myTank: SCNNode?
     var otherTank: SCNNode?
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -116,7 +125,7 @@ class ViewController: UIViewController {
         setupPadScene()
         
         // multipeer session here
-        multipeerSession = MultipeerSession(receivedDataHandler: receivedData)
+        multipeerSession = MultipeerSession(receivedDataHandler: receivedData, streamingDataHandler: streaming)
         
         // Do any additional setup after loading the view, typically from a nib.
         
@@ -399,51 +408,6 @@ class ViewController: UIViewController {
     //        <#code#>
     //    }
     
-    var mapProvider: MCPeerID?
-    
-    /// - Tag: ReceiveData
-    func receivedData(_ data: Data, from peer: MCPeerID) {
-        
-        do {
-            //            var bits = ReadableBitStream(data: data)
-            ////            let bit = inout(&bits)
-            //            print(bits)
-            if !mapHasInited {
-                if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
-                    // Run the session with the received world map.
-                    let configuration = ARWorldTrackingConfiguration()
-                    configuration.planeDetection = .horizontal
-                    configuration.initialWorldMap = worldMap
-                    arscnView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-                    
-                    // Remember who provided the map for showing UI feedback.
-                    mapProvider = peer
-                }
-                self.mapHasInited = true
-                DispatchQueue.main.async {
-                    self.sendMapButton.isHidden = true
-                }
-            }
-            else {
-                if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
-                    // Add anchor to the session, ARSCNView delegate adds visible content.
-                    self.arscnView.session.add(anchor: anchor)
-                }
-                else
-                    if let movement = try NSKeyedUnarchiver.unarchivedObject(ofClass: MovementData.self, from: data) {
-                        print(movement)
-                        self.moveTank(data: movement)
-                }
-//                else {
-//                    print("unknown data recieved from \(peer)")
-//                }
-                
-            }
-        } catch {
-            print("can't decode data recieved from \(peer)")
-        }
-    }
-    
 }
 
 extension ViewController: ARSCNViewDelegate, ARSessionDelegate {
@@ -516,6 +480,58 @@ extension ViewController: ARSCNViewDelegate, ARSessionDelegate {
         return true
     }
     
+    
+}
+
+extension ViewController {
+    
+    /// - Tag: ReceiveData
+    func receivedData(_ data: Data, from peer: MCPeerID) {
+        
+        do {
+            //            var bits = ReadableBitStream(data: data)
+            ////            let bit = inout(&bits)
+            //            print(bits)
+            if !mapHasInited {
+                if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
+                    // Run the session with the received world map.
+                    let configuration = ARWorldTrackingConfiguration()
+                    configuration.planeDetection = .horizontal
+                    configuration.initialWorldMap = worldMap
+                    arscnView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+                    
+                    // Remember who provided the map for showing UI feedback.
+                    mapProvider = peer
+                }
+                self.mapHasInited = true
+                DispatchQueue.main.async {
+                    self.sendMapButton.isHidden = true
+                }
+            }
+            else {
+                if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
+                    // Add anchor to the session, ARSCNView delegate adds visible content.
+                    self.arscnView.session.add(anchor: anchor)
+                }
+                else
+                    if let movement = try NSKeyedUnarchiver.unarchivedObject(ofClass: MovementData.self, from: data) {
+                        print(movement)
+                        self.moveTank(data: movement)
+                }
+                //                else {
+                //                    print("unknown data recieved from \(peer)")
+                //                }
+                
+            }
+        } catch {
+            print("can't decode data recieved from \(peer)")
+        }
+    }
+    
+    
+    func streaming(_ data: Data, from peer: MCPeerID) {
+        
+    }
     
 }
 

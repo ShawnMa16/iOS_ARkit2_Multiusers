@@ -17,10 +17,12 @@ class MultipeerSession: NSObject {
     private var serviceBrowser: MCNearbyServiceBrowser!
     
     private let receivedDataHandler: (Data, MCPeerID) -> Void
+    private let streamDataHandler: (Data, MCPeerID) -> Void
     
     /// - Tag: MultipeerSetup
-    init(receivedDataHandler: @escaping (Data, MCPeerID) -> Void ) {
+    init(receivedDataHandler: @escaping (Data, MCPeerID) -> Void, streamingDataHandler: @escaping (Data, MCPeerID) -> Void ) {
         self.receivedDataHandler = receivedDataHandler
+        self.streamDataHandler = streamingDataHandler
         
         super.init()
         
@@ -60,6 +62,13 @@ extension MultipeerSession: MCSessionDelegate {
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
+        var buffer = [UInt8](repeating: 0, count: 8)
+        stream.open()
+        
+        if stream.hasBytesAvailable {
+            let result: Int = stream.read(&buffer, maxLength: buffer.count)
+            print("result: \(result)")
+        }
         fatalError("This service does not send/receive streams.")
     }
     
