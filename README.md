@@ -40,7 +40,7 @@ press 'send world map' button to share the same world map
 
 wait for the FourSquare to recognize a plane
 ```
-press 'star' button to add a tank anchor to the world map
+press 'start' button to add a tank anchor to the world map
 ```
 
 
