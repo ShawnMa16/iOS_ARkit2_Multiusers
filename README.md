@@ -21,35 +21,35 @@ Install the R.swift and Snapkit Libraries from pod
 pod install
 ```
 
-## Running the tests
+## How to run?
 
-Explain how to run the automated tests for this system
+This app is based on AR worldmap and MultipeerConnectivity
 
 ### Break down into end to end tests
 
 Explain what these tests test and why
 
 ```
-Give an example
+launch app
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
-
+wait for the connection between devices
 ```
-Give an example
+press 'send world map' button to share the same world map
 ```
 
-## Deployment
+wait for the FourSquare to recognize a plane
+```
+press 'star' button to add a tank anchor to the world map
+```
 
-Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [ARkit2](https://developer.apple.com/arkit/) - ARKit version
+* [MultipeerConnectivity](https://developer.apple.com/documentation/multipeerconnectivity) - Data communication between devices
+* [SnapKit](http://snapkit.io) - Auto layout
+* [R.swift](https://github.com/mac-cain13/R.swift) - Autocompleted
 
 ## Contributing
 
