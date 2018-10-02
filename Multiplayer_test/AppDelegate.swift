@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         if let window = window {
-            let mainViewController = ViewController()
+            let mainViewController = GameViewController()
             window.rootViewController = mainViewController
             window.makeKeyAndVisible()
         }
