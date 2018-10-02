@@ -197,14 +197,13 @@ class GameViewController: UIViewController {
             
             let velocity = float3(Float(data.velocity.x), Float(data.velocity.y), Float(0))
             print(velocity)
-//            let v = GameVelocity(vector: velocity)
+            let v = GameVelocity(vector: velocity)
             let angular = Float(data.angular)
-            let shouldBeSent = MoveData(velocity: velocity, angular: angular)
+            let shouldBeSent = MoveData(velocity: v, angular: angular)
 //            let
+            self.gameManager?.moveTank(player: self.myself, movement: shouldBeSent)
             
             self.gameManager?.send(gameAction: .joyStickMoved(shouldBeSent))
-            
-            self.gameManager?.moveTank(player: self.myself, movement: shouldBeSent)
 //            let testData = MoveData
             
 //            if let output = self.outputStream {

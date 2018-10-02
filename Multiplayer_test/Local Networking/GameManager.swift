@@ -162,17 +162,19 @@ class GameManager: NSObject {
     }
     
     func moveTank(player: Player, movement: MoveData) {
-        let tank = tanks.filter { $0.owner == player}
-        tank.forEach { (tank) in
-            
-            let x = tank.objectRootNode.position.x + movement.velocity.x * Float(joystickVelocityMultiplier)
-            let y = tank.objectRootNode.position.y + movement.velocity.y * Float(joystickVelocityMultiplier)
-            let z = tank.objectRootNode.position.z - movement.velocity.y * Float(joystickVelocityMultiplier)
-            
-            let angular = movement.angular
-            
-            tank.objectRootNode.position = SCNVector3(x: x, y: y, z: z)
-            tank.objectRootNode.eulerAngles.y = angular + Float(180.0 * .pi / 180)
+        DispatchQueue.main.async {
+            let tank = self.tanks.filter { $0.owner == player}
+            tank.forEach { (tank) in
+                
+                let x = tank.objectRootNode.position.x + movement.velocity.vector.x * Float(joystickVelocityMultiplier)
+                let y = tank.objectRootNode.position.y + movement.velocity.vector.y * Float(joystickVelocityMultiplier)
+                let z = tank.objectRootNode.position.z - movement.velocity.vector.y * Float(joystickVelocityMultiplier)
+                
+                let angular = movement.angular
+                
+                tank.objectRootNode.position = SCNVector3(x: x, y: y, z: z)
+                tank.objectRootNode.eulerAngles.y = angular + Float(180.0 * .pi / 180)
+            }
         }
     }
     
