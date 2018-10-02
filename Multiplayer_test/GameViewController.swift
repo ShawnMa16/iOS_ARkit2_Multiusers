@@ -122,24 +122,10 @@ class GameViewController: UIViewController {
         return label
     }()
     
-    lazy var sendMapButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.5)
-        button.setTitle("send world Map", for: .normal)
-        button.tintColor = .white
-        button.layer.cornerRadius = 5
-        button.clipsToBounds = true
-        return button
-    }()
-    
-    
-//    var multipeerSession: MultipeerSession!
     var mapHasInited: Bool = false
     var mapProvider: MCPeerID?
     var outputStream: OutputStream?
     
-//    var mySelf: Player!
-    var opponent: Player?
     private let myself = UserDefaults.standard.myself
     
     var gameState: GameState = .shouldInit
@@ -180,21 +166,15 @@ class GameViewController: UIViewController {
         view.addSubview(arscnView)
         view.addSubview(padView)
         view.addSubview(startButton)
-        view.addSubview(sendMapButton)
         
         view.addSubview(sessionInfoView)
         sessionInfoView.addSubview(sessionInfoLabel)
         sessionInfoView.addSubview(mappingStatusLabel)
         
-//        initARScene()
         setupCamera()
-//        setupARView()
         setupPadView()
         setupSubViews()
-        
-//        initARSession()
         setupPadScene()
-        
         
         gameStartViewContoller.delegate = self
         overlayView = gameStartViewContoller.view
@@ -210,17 +190,21 @@ class GameViewController: UIViewController {
         NotificationCenter.default.addObserver(forName: joystickNotificationName, object: nil, queue: OperationQueue.main) { (notification) in
             guard let userInfo = notification.userInfo else { return }
             let data = userInfo["data"] as! AnalogJoystickData
-            let shouldSend = MovementData(velocity: data.velocity, angular: Float(data.angular))
+//            let shouldSend = MovementData(velocity: data.velocity, angular: Float(data.angular))
 //            guard let sendData = try? NSKeyedArchiver.archivedData(withRootObject: shouldSend, requiringSecureCoding: true)
 //                else { fatalError("can't encode anchor") }
 //            let bits = WritableBitStream()
             
             let velocity = float3(Float(data.velocity.x), Float(data.velocity.y), Float(0))
-            let v = GameVelocity(vector: velocity)
+            print(velocity)
+//            let v = GameVelocity(vector: velocity)
             let angular = Float(data.angular)
-//            let shouldBeSent = MoveData(velocity: v, angular: angular)
+            let shouldBeSent = MoveData(velocity: velocity, angular: angular)
+//            let
             
+            self.gameManager?.send(gameAction: .joyStickMoved(shouldBeSent))
             
+            self.gameManager?.moveTank(player: self.myself, movement: shouldBeSent)
 //            let testData = MoveData
             
 //            if let output = self.outputStream {
@@ -234,7 +218,7 @@ class GameViewController: UIViewController {
 //            self.multipeerSession.sendToAllPeers(sendData)
             //            print(data.description)
             
-            self.moveTank(data: shouldSend)
+//            self.moveTank(data: shouldSend)
 //            self.myTank!.position = SCNVector3(
 //                self.myTank!.position.x + Float(data.velocity.x * joystickVelocityMultiplier),
 //                self.myTank!.position.y,
@@ -251,9 +235,6 @@ class GameViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupARView()
-        initARScene()
-        initARSession()
         
 //        gameManager?.start()
     }
@@ -298,6 +279,12 @@ class GameViewController: UIViewController {
         scene.scaleMode = .resizeFill
         padView.presentScene(scene)
         padView.ignoresSiblingOrder = true
+    }
+    
+    func startAR() {
+        setupARView()
+        initARScene()
+        initARSession()
     }
     
     func initARScene() {
@@ -351,7 +338,7 @@ class GameViewController: UIViewController {
         
         mappingStatusLabel.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(sendMapButton.snp.top).offset(-20)
+            make.bottom.equalTo(startButton.snp.top).offset(-20)
         }
         
         startButton.snp.makeConstraints { (make) in
@@ -362,15 +349,6 @@ class GameViewController: UIViewController {
         }
         startButton.isHidden = false
         startButton.addTarget(self, action: #selector(addTank), for: .touchUpInside)
-        
-        
-        sendMapButton.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
-            make.height.equalTo(44)
-            make.width.equalTo(150)
-            make.bottom.equalTo(startButton.snp.top).offset(-20)
-        }
-        sendMapButton.addTarget(self, action: #selector(startGame), for: .touchUpInside)
         
     }
     
@@ -385,8 +363,8 @@ class GameViewController: UIViewController {
     
     
     @objc func addTank() {
-//        startButton.isHidden = true
-//        padView.isHidden = false
+        startButton.isHidden = true
+        padView.isHidden = false
         let tankNode = SCNNode()
 //        tankNode.transform = self.focusSquare.worldTransform
         tankNode.simdWorldTransform = self.focusSquare.simdWorldTransform
@@ -534,8 +512,8 @@ class GameViewController: UIViewController {
                 
                 self.arscnView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
 //                self.gameManager.scen
-                self.updateFocusIfNeeded()
-                self.updateFocusSquare(isObjectVisible: false)
+//                self.updateFocusIfNeeded()
+//                self.updateFocusSquare(isObjectVisible: false)
 //                self.gameManager?.resetWorld(sceneView: self.arscnView)
 //                gameManager?.start()
                 self.sessionState = .localizingToBoard
@@ -722,6 +700,7 @@ extension GameViewController: GameStartViewControllerDelegate {
         gameManager = GameManager(sceneView: arscnView,
                                   session: session)
         gameManager?.start()
+        startAR()
     }
     
     func gameStartViewController(_ _: UIViewController, didPressStartSoloGameButton: UIButton) {

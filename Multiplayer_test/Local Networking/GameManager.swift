@@ -64,7 +64,6 @@ class GameManager: NSObject {
     
     func resetWorld(sceneView: SCNView) {
         self.scene = sceneView.scene!
-//        self.scene.rootNode = sceneView.scene?.rootNode
     }
     
     weak var delegate: GameManagerDelegate?
@@ -96,6 +95,9 @@ class GameManager: NSObject {
         case .gameAction(let gameAction):
             // should controll tank here
             guard let player = command.player else { return }
+            if case let .joyStickMoved(data) = gameAction {
+                self.moveTank(player: player, movement: data)
+            }
                 //            interactionManager.handle(gameAction: gameAction, from: player)
         case .boardSetup(let boardAction):
             if let player = command.player {
@@ -147,6 +149,7 @@ class GameManager: NSObject {
         }
         
         delegate?.managerDidStartGame(self)
+        isInitialized = true
     }
     
     func createTank(tankNode: SCNNode, owner: Player?) {
@@ -155,6 +158,21 @@ class GameManager: NSObject {
         self.tanks.insert(tank)
         DispatchQueue.main.async {
             self.scene.rootNode.addChildNode(tankNode)
+        }
+    }
+    
+    func moveTank(player: Player, movement: MoveData) {
+        let tank = tanks.filter { $0.owner == player}
+        tank.forEach { (tank) in
+            
+            let x = tank.objectRootNode.position.x + movement.velocity.x * Float(joystickVelocityMultiplier)
+            let y = tank.objectRootNode.position.y + movement.velocity.y * Float(joystickVelocityMultiplier)
+            let z = tank.objectRootNode.position.z - movement.velocity.y * Float(joystickVelocityMultiplier)
+            
+            let angular = movement.angular
+            
+            tank.objectRootNode.position = SCNVector3(x: x, y: y, z: z)
+            tank.objectRootNode.eulerAngles.y = angular + Float(180.0 * .pi / 180)
         }
     }
     
@@ -168,15 +186,20 @@ extension GameManager: NetworkSessionDelegate {
             process(command: command)
         }
         
+        if case Action.gameAction(.joyStickMoved(_)) = command.action {
+            gameCommands.append(command)
+        }
+        
         // Check if the action received is used to setup the board
         // If so, process it and don't wait for the next update cycle to unqueue the event
         // The GameManager is paused at that time of joining a game
         
         if case Action.boardSetup(_) = command.action {
             process(command: command)
-        } else {
-            gameCommands.append(command)
         }
+//        else {
+//            gameCommands.append(command)
+//        }
     }
     
     func networkSession(_ session: NetworkSession, joining player: Player) {
