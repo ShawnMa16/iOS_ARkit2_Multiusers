@@ -14,6 +14,8 @@ extension Action: CustomStringConvertible {
             switch action {
             case .joyStickMoved:
                 return "joy stick moved"
+            case .movement(_):
+                return "joy stick moved"
             }
         case .boardSetup(let setup):
             switch setup {

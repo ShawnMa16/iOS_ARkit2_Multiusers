@@ -10,26 +10,10 @@ import Foundation
 import UIKit
 
 class GameCell: UITableViewCell {
-    
-//    let textLabel: UILabel = {
-//        return UILabel()
-//    }()
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-//        contentView.addSubview(textLabel)
-//        setupTextLabel()
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    func setupTextLabel() {
-//        textLabel.snp.makeConstraints { (make) in
-//            make.edges.equalToSuperview().offset(0)
-//        }
-//    }
-    
 }

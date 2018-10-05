@@ -11,7 +11,7 @@ import SceneKit
 import CoreGraphics
 
 var joystickNotificationName = NSNotification.Name("joystickNotificationName")
-let joystickVelocityMultiplier: CGFloat = 0.00005
+let joystickVelocityMultiplier: CGFloat = 0.00006
 
 struct Constants {
     static let tankScenePath = "Assets.scnassets/Models/Tank.scn"

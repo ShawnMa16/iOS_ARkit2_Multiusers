@@ -11,13 +11,12 @@ import SceneKit
 import GameplayKit
 import os.log
 
-class Tank: NSObject {
+class GameObject: NSObject {
     
-    let objectRootNode: SCNNode
+    var objectRootNode: SCNNode!
+    var physicsNode: SCNNode?
     var geometryNode: SCNNode?
     var owner: Player?
-    
-    var physicsNode: SCNNode?
     
     var isAlive: Bool
     
@@ -32,8 +31,8 @@ class Tank: NSObject {
         if let index = index {
             self.index = index
         } else {
-            self.index = Tank.indexCounter
-            Tank.indexCounter += 1
+            self.index = GameObject.indexCounter
+            GameObject.indexCounter += 1
         }
         
         super.init()
@@ -54,5 +53,21 @@ class Tank: NSObject {
         self.objectRootNode.addChildNode(self.geometryNode!)
     }
     
+    func apply(movementData nodeData: MovementData, isHalfway: Bool) {
+        // if we're not alive, avoid applying physics updates.
+        // this will allow objects on clients to get culled properly
+        guard isAlive else { return }
+        
+        if isHalfway {
+            objectRootNode.simdWorldPosition = (nodeData.position + objectRootNode.simdWorldPosition) * 0.5
+            objectRootNode.simdEulerAngles = (nodeData.eulerAngles + objectRootNode.simdEulerAngles) * 0.5
+        } else {
+            objectRootNode.simdWorldPosition = nodeData.position
+            objectRootNode.simdEulerAngles = nodeData.eulerAngles
+        }
+    }
     
+    func generateMovementData() -> MovementData? {
+        return objectRootNode.map { MovementData(node: $0, alive: isAlive) }
+    }
 }

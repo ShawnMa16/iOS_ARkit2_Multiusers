@@ -34,11 +34,13 @@ class GameManager: NSObject {
     private let session: NetworkSession?
     private var scene: SCNScene
     
-    private var tanks = Set<Tank>()
+    var tanks = Set<GameObject>()
     
     private let catapultsLock = NSLock()
     private var gameCommands = [GameCommand]()
     private let commandsLock = NSLock()
+    
+    private let movementSyncData = MovementSyncSceneData()
 
     let currentPlayer = UserDefaults.standard.myself
 
@@ -61,6 +63,23 @@ class GameManager: NSObject {
         commandsLock.lock(); defer { commandsLock.unlock() }
         gameCommands.append(GameCommand(player: currentPlayer, action: .gameAction(gameAction)))
     }
+    
+    private func syncMovement() {
+        os_signpost(.begin, log: .render_loop, name: .physics_sync, signpostID: .render_loop,
+                    "Movement sync started")
+        defer { os_signpost(.end, log: .render_loop, name: .physics_sync, signpostID: .render_loop,
+                            "Movement sync finished") }
+        
+        if isNetworked && movementSyncData.isInitialized {
+            if isServer {
+                let movementData = movementSyncData.generateData()
+                session?.send(action: .gameAction(.movement(movementData)))
+            } else {
+                movementSyncData.updateFromReceivedData()
+            }
+        }
+    }
+    
     
     func resetWorld(sceneView: SCNView) {
         self.scene = sceneView.scene!
@@ -93,12 +112,14 @@ class GameManager: NSObject {
         
         switch command.action {
         case .gameAction(let gameAction):
-            // should controll tank here
-            guard let player = command.player else { return }
-            if case let .joyStickMoved(data) = gameAction {
-                self.moveTank(player: player, movement: data)
+            if case let .movement(movementData) = gameAction {
+                movementSyncData.receive(packet: movementData)
             }
-                //            interactionManager.handle(gameAction: gameAction, from: player)
+            // should controll tank here
+//            guard let player = command.player else { return }
+//            if case let .joyStickMoved(data) = gameAction {
+//                self.moveTank(player: player, movement: data)
+//            }
         case .boardSetup(let boardAction):
             if let player = command.player {
                 delegate?.manager(self, received: boardAction, from: player)
@@ -121,6 +142,7 @@ class GameManager: NSObject {
     /// - Tag: GameManager-update
     func update(timeDelta: TimeInterval) {
         processCommandQueue()
+        syncMovement()
     }
     
     private func processCommandQueue() {
@@ -153,28 +175,40 @@ class GameManager: NSObject {
     }
     
     func createTank(tankNode: SCNNode, owner: Player?) {
-        let tank = Tank(node: tankNode, index: 0, alive: true, owner: owner)
-//        tank.objectRootNode = tankNode
+        let tank = GameObject(node: tankNode, index: 0, alive: true, owner: owner)
+        // insert new Tank() to game scene and sync data
         self.tanks.insert(tank)
+        self.movementSyncData.addObject(tank)
+        
         DispatchQueue.main.async {
             self.scene.rootNode.addChildNode(tankNode)
         }
     }
     
     func moveTank(player: Player, movement: MoveData) {
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
             let tank = self.tanks.filter { $0.owner == player}
             tank.forEach { (tank) in
                 
-                let x = tank.objectRootNode.position.x + movement.velocity.vector.x * Float(joystickVelocityMultiplier)
-                let y = tank.objectRootNode.position.y + movement.velocity.vector.y * Float(joystickVelocityMultiplier)
-                let z = tank.objectRootNode.position.z - movement.velocity.vector.y * Float(joystickVelocityMultiplier)
+//                let x = tank.objectRootNode.position.x + movement.velocity.vector.x * Float(joystickVelocityMultiplier)
+//                let y = tank.objectRootNode.position.y + movement.velocity.vector.y * Float(joystickVelocityMultiplier)
+//                let z = tank.objectRootNode.position.z - movement.velocity.vector.y * Float(joystickVelocityMultiplier)
+//
+//                let angular = movement.angular
+//
+//                tank.objectRootNode.position = SCNVector3(x: x, y: y, z: z)
+//                tank.objectRootNode.eulerAngles.y = angular + Float(180.0 * .pi / 180)
+//            }
+////        }
+//
+                let x = tank.objectRootNode.position.x + movement.velocity.x * Float(joystickVelocityMultiplier)
+                let y = tank.objectRootNode.position.y + movement.velocity.y * Float(joystickVelocityMultiplier)
+                let z = tank.objectRootNode.position.z - movement.velocity.y * Float(joystickVelocityMultiplier)
                 
                 let angular = movement.angular
                 
-                tank.objectRootNode.position = SCNVector3(x: x, y: y, z: z)
-                tank.objectRootNode.eulerAngles.y = angular + Float(180.0 * .pi / 180)
-            }
+                tank.objectRootNode.simdPosition = float3(x, y, z)
+                tank.objectRootNode.simdEulerAngles.y = angular + Float(180.0 * .pi / 180)
         }
     }
     
@@ -188,7 +222,8 @@ extension GameManager: NetworkSessionDelegate {
             process(command: command)
         }
         
-        if case Action.gameAction(.joyStickMoved(_)) = command.action {
+        if case Action.gameAction(.movement(_)) = command.action {
+//            gameCommands.append(command)
             gameCommands.append(command)
         }
         

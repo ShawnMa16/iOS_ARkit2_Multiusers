@@ -131,10 +131,6 @@ class GameViewController: UIViewController {
     var gameState: GameState = .shouldInit
     var gameWorldCenterTransform: SCNMatrix4 = SCNMatrix4Identity
     
-    var tankTemplateNode: SCNNode!
-    var myTank: SCNNode?
-    var otherTank: SCNNode?
-    
     var gameManager: GameManager? {
         didSet {
             guard let manager = gameManager else {
@@ -152,6 +148,8 @@ class GameViewController: UIViewController {
     }
     
     var sessionState: SessionState = .setup
+    
+    var stickMovement: Int = 0
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -171,7 +169,6 @@ class GameViewController: UIViewController {
         sessionInfoView.addSubview(sessionInfoLabel)
         sessionInfoView.addSubview(mappingStatusLabel)
         
-        setupCamera()
         setupPadView()
         setupSubViews()
         setupPadScene()
@@ -181,67 +178,80 @@ class GameViewController: UIViewController {
         
         view.addSubview(overlayView!)
         view.bringSubviewToFront(overlayView!)
-        // multipeer session here
-//        multipeerSession = MultipeerSession(receivedDataHandler: receivedData, streamingDataHandler: streamHandler)
-//        mySelf = Player(peerID: self.multipeerSession.myPeerID)
-
-        // Do any additional setup after loading the view, typically from a nib.
         
         NotificationCenter.default.addObserver(forName: joystickNotificationName, object: nil, queue: OperationQueue.main) { (notification) in
             guard let userInfo = notification.userInfo else { return }
             let data = userInfo["data"] as! AnalogJoystickData
-//            let shouldSend = MovementData(velocity: data.velocity, angular: Float(data.angular))
-//            guard let sendData = try? NSKeyedArchiver.archivedData(withRootObject: shouldSend, requiringSecureCoding: true)
-//                else { fatalError("can't encode anchor") }
-//            let bits = WritableBitStream()
             
             let velocity = float3(Float(data.velocity.x), Float(data.velocity.y), Float(0))
             print(velocity)
-            let v = GameVelocity(vector: velocity)
-            let angular = Float(data.angular)
-            let shouldBeSent = MoveData(velocity: v, angular: angular)
-//            let
-            self.gameManager?.moveTank(player: self.myself, movement: shouldBeSent)
             
-            self.gameManager?.send(gameAction: .joyStickMoved(shouldBeSent))
-//            let testData = MoveData
+            //            self.newVelocity = GameVelocity(vector: velocity)
+            //            if self.oldVelocity == nil {
+            //                self.oldVelocity = self.newVelocity
+            //            }
+            //
+            //            let d = distance(self.newVelocity!.vector, self.oldVelocity!.vector)
+            //
+            //            if abs(d) > 1 {
+            //                print(self.newVelocity!)
+            //            }
+//            let angular = Float(data.angular)
             
-//            if let output = self.outputStream {
-//                if output.hasSpaceAvailable {
-//                    output.write(sendData.withUnsafeBytes { $0.pointee }, maxLength: sendData.count)
-//                }
-////                output.write(sendData.copyBytes(to: <#T##UnsafeMutableBufferPointer<DestinationType>#>), maxLength: <#T##Int#>)
-//            }
-//            let test = WritableBitStream
-//            self.multipeerSession.sendToAllPeers(sendData)
-//            self.multipeerSession.sendToAllPeers(sendData)
-            //            print(data.description)
+            let tank = self.gameManager?.tanks.filter{ $0.owner == self.myself}
+            let tankNode = (tank?.first?.objectRootNode)!
             
-//            self.moveTank(data: shouldSend)
-//            self.myTank!.position = SCNVector3(
-//                self.myTank!.position.x + Float(data.velocity.x * joystickVelocityMultiplier),
-//                self.myTank!.position.y,
-//                self.myTank!.position.z - Float(data.velocity.y * joystickVelocityMultiplier))
+            guard GameTime.frameCount % 2 == 0 else { return }
+            
+            tankNode.simdPosition = simd_float3(
+                tankNode.simdPosition.x + velocity.x * Float(joystickVelocityMultiplier),
+                tankNode.simdPosition.y + velocity.y * Float(joystickVelocityMultiplier),
+                tankNode.simdPosition.z - velocity.y * Float(joystickVelocityMultiplier))
+            tankNode.simdEulerAngles.y = Float(data.angular) + Float(180.0 * .pi / 180)
+            
+//            let movement = MovementData(node: tankNode, alive: true)
 //
-//            self.myTank!.eulerAngles.y = Float(data.angular) + Float(180.0 * .pi / 180)
-            //                + self.arscnView.session.currentFrame!.camera.eulerAngles.y
+//            let syncMovement = MovementSyncData(packetNumber: self.stickMovement, nodeData: [movement])
+//
+//            DispatchQueue.main.async {
+//                self.gameManager?.send(gameAction: .movement(syncMovement))
+//            }
+//
+            self.stickMovement += 1
             
+//            let x = tank.objectRootNode.position.x + movement.velocity.x * Float(joystickVelocityMultiplier)
+//            let y = tank.objectRootNode.position.y + movement.velocity.y * Float(joystickVelocityMultiplier)
+//            let z = tank.objectRootNode.position.z - movement.velocity.y * Float(joystickVelocityMultiplier)
+//
+//            let angular = movement.angular
+//
+//            tank.objectRootNode.simdPosition = float3(x, y, z)
+//            tank.objectRootNode.simdEulerAngles.y = angular + Float(180.0 * .pi / 180)
+            
+            //            let angular = Float(data.angular)
+            //            let shouldBeSent = MoveData(velocity: velocity, angular: angular)
+            
+//            let shouldBeSent = MovementSyncData
+            
+                //            let shouldBeSent = MoveData(velocity: GameVelocity(vector: velocity), angular: angular)
+                
+//                self.gameManager?.moveTank(player: self.myself, movement: shouldBeSent)
+//                DispatchQueue.main.async {
+//
+//                    self.gameManager?.send(gameAction: .joyStickMoved(shouldBeSent))
+//            }
         }
         
-//        let gameSession = NetworkSession(myself: myself, asServer: true, host: myself)
-//        self.gameManager = GameManager(sceneView: self.arscnView, session: gameSession)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-//        gameManager?.start()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-//        arscnView.session.pause()
+        arscnView.session.pause()
     }
     
     func setupCamera() {
@@ -281,6 +291,7 @@ class GameViewController: UIViewController {
     }
     
     func startAR() {
+        setupCamera()
         setupARView()
         initARScene()
         initARSession()
@@ -289,7 +300,6 @@ class GameViewController: UIViewController {
     func initARScene() {
         arscnView.delegate = self
         arscnView.autoenablesDefaultLighting = true
-//        arscnView.scene.rootNode.addChildNode(renderRoot)
     }
     
     func initARSession() {
@@ -352,81 +362,22 @@ class GameViewController: UIViewController {
     }
     
     
-    private func loadTank() -> SCNNode {
-        let sceneURL = Bundle.main.url(forResource: "Tank", withExtension: "scn", subdirectory: "Assets.scnassets/Models")!
-        let referenceNode = SCNReferenceNode(url: sceneURL)!
-        referenceNode.load()
-        
-        return referenceNode
-    }
-    
-    
     @objc func addTank() {
         startButton.isHidden = true
         padView.isHidden = false
         let tankNode = SCNNode()
-//        tankNode.transform = self.focusSquare.worldTransform
+        //        tankNode.transform = self.focusSquare.worldTransform
         tankNode.simdWorldTransform = self.focusSquare.simdWorldTransform
         print(self.focusSquare.simdWorldTransform)
-//        tankNode.position = self.focusSquare.presentation.simdWorldPosition
+        //        tankNode.position = self.focusSquare.presentation.simdWorldPosition
         
         tankNode.eulerAngles = SCNVector3(0, self.focusSquare.eulerAngles.y + 180.0 * .pi / 180, 0)
         tankNode.scale = SCNVector3(0.0002, 0.0002, 0.0002)
         
         let addTank = AddTankNodeAction(simdWorldTransform: self.focusSquare.simdWorldTransform, eulerAngles: float3(0, self.focusSquare.eulerAngles.y + 180.0 * .pi / 180, 0))
         self.gameManager?.send(addTankAction: addTank)
-//        let addTankAction = AddTankNodeAction
         self.gameManager?.createTank(tankNode: tankNode, owner: myself)
-//        self.tankNode?.transform = self.focusSquare.transform
-//        self.tankNode?.eulerAngles = SCNVector3(0, self.focusSquare.eulerAngles.y + 180.0 * .pi / 180, 0)
-//        self.tankNode?.scale = SCNVector3(0.0002, 0.0002, 0.0002)
-        
-//        let anchor = ARAnchor(name: "tank", transform: self.focusSquare.simdTransform)
-//        self.arscnView.session.add(anchor: anchor)
-        
-        //            self.arscnView.scene.rootNode.addChildNode(self.tankNode!)
-        
-        // send node to another peer
-//        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
-//            else { fatalError("can't encode anchor") }
-//        self.multipeerSession.sendToAllPeers(data)
-        
-//        do {
-//            self.outputStream = try self.multipeerSession.publicSession.startStream(withName: "movement", toPeer: self.multipeerSession!.connectedPeers.first!)
-//            if let outputStream = self.outputStream {
-//                outputStream.schedule(in: RunLoop.main, forMode: RunLoop.Mode.default)
-//                outputStream.open()
-//                print("output is open")
-//            }
-//        } catch {
-//            print("unable to start stream!! \(error)")
-//        }
-
     }
-    
-//    @objc func sendWorldMap() {
-//        arscnView.session.getCurrentWorldMap { worldMap, error in
-//            guard let map = worldMap
-//                else { print("Error: \(error!.localizedDescription)"); return }
-//            guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
-//                else { fatalError("can't encode map") }
-//            self.multipeerSession.sendToAllPeers(data)
-//            self.sendMapButton.isHidden = true
-//            self.mapHasInited = true
-//        }
-//    }
-    
-    func moveTank(data: MovementData) {
-        self.myTank!.position = SCNVector3(
-            self.myTank!.position.x + Float(data.velocity.x * joystickVelocityMultiplier),
-            self.myTank!.position.y,
-            self.myTank!.position.z - Float(data.velocity.y * joystickVelocityMultiplier))
-        
-        self.myTank!.eulerAngles.y = Float(data.angular) + Float(180.0 * .pi / 180)
-    }
-    
-
-    // MARK:- update delegate
     
     
     // MARK:- game logic
@@ -435,11 +386,6 @@ class GameViewController: UIViewController {
         let gameSession = NetworkSession(myself: myself, asServer: true, host: myself)
         self.gameManager = GameManager(sceneView: self.arscnView, session: gameSession)
     }
-    
-    
-    //    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-    //        <#code#>
-    //    }
     
     func showAlert(title: String, message: String? = nil, actions: [UIAlertAction]? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -506,15 +452,15 @@ class GameViewController: UIViewController {
             DispatchQueue.main.async {
                 self.targetWorldMap = worldMap
                 let configuration = ARWorldTrackingConfiguration()
-                                    configuration.planeDetection = .horizontal
-                                    configuration.initialWorldMap = worldMap
+                configuration.planeDetection = .horizontal
+                configuration.initialWorldMap = worldMap
                 
                 self.arscnView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-//                self.gameManager.scen
-//                self.updateFocusIfNeeded()
-//                self.updateFocusSquare(isObjectVisible: false)
-//                self.gameManager?.resetWorld(sceneView: self.arscnView)
-//                gameManager?.start()
+                //                self.gameManager.scen
+                //                self.updateFocusIfNeeded()
+                //                self.updateFocusSquare(isObjectVisible: false)
+                //                self.gameManager?.resetWorld(sceneView: self.arscnView)
+                //                gameManager?.start()
                 self.sessionState = .localizingToBoard
             }
         } catch {
@@ -574,87 +520,10 @@ class GameViewController: UIViewController {
     }
 }
 
-
-extension GameViewController {
-    
-    /// - Tag: ReceiveData
-//    func receivedData(_ data: Data, from peer: MCPeerID) {
-//        
-//        do {
-////            var bits = ReadableBitStream(data: data)
-//            
-//            if !mapHasInited {
-//                if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
-//                    // Run the session with the received world map.
-//                    let configuration = ARWorldTrackingConfiguration()
-//                    configuration.planeDetection = .horizontal
-//                    configuration.initialWorldMap = worldMap
-//                    arscnView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-//                    
-//                    // Remember who provided the map for showing UI feedback.
-//                    mapProvider = peer
-//                    self.opponent = Player(peerID: peer)
-//                    print(self.multipeerSession.connectedPeers)
-//                }
-//                self.mapHasInited = true
-//                DispatchQueue.main.async {
-//                    self.sendMapButton.isHidden = true
-//                }
-//            }
-//            else {
-//                if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
-//                    // Add anchor to the session, ARSCNView delegate adds visible content.
-//                    self.arscnView.session.add(anchor: anchor)
-//                }
-//                else
-//                    if let movement = try NSKeyedUnarchiver.unarchivedObject(ofClass: MovementData.self, from: data) {
-//                        print(movement)
-//                        self.moveTank(data: movement)
-//                }
-//                //                else {
-//                //                    print("unknown data recieved from \(peer)")
-//                //                }
-//                
-//            }
-//        } catch {
-//            print("can't decode data recieved from \(peer)")
-//        }
-//    }
-    
-    // MARK: - handle stream data
-    
-    func streamHandler(_ aStream: Stream, handle eventCode: Stream.Event) {
-        print("stream entered")
-        switch eventCode {
-        case Stream.Event.hasBytesAvailable :
-            
-            let input = aStream as! InputStream
-            var buffer = [UInt8](repeating: 0, count: 1024)
-            let numberBytes = input.read(&buffer, maxLength: 1024)
-            let data = Data(bytes: &buffer, count: numberBytes)
-            print(data)
-            do {
-                if let movement = try NSKeyedUnarchiver.unarchivedObject(ofClass: MovementData.self, from: data) {
-                    print(movement)
-                }
-            } catch {
-                print("streaming wrong")
-            }
-        
-        case Stream.Event.hasSpaceAvailable:
-            break
-        default:
-            break
-        }
-    }
-    
-}
-
 extension GameViewController: GameManagerDelegate {
     func manager(_ manager: GameManager, addTank: AddTankNodeAction) {
         //
     }
-    
     
     func manager(_ manager: GameManager, received boardAction: BoardSetupAction, from player: Player) {
         DispatchQueue.main.async {
@@ -678,8 +547,8 @@ extension GameViewController: GameManagerDelegate {
             }
             guard !UserDefaults.standard.disableInGameUI else { return }
             
-//            self.notificationLabel.text = "You joined the game!"
-//            self.notificationLabel.fadeInFadeOut(duration: 1.0)
+            //            self.notificationLabel.text = "You joined the game!"
+            //            self.notificationLabel.fadeInFadeOut(duration: 1.0)
         }
     }
     
