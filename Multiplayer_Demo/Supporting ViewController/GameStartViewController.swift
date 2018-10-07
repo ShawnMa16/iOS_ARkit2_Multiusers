@@ -26,7 +26,7 @@ class GameStartViewController: UIViewController {
     
     let hostButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = .blue
+        button.backgroundColor = UIColor(red: 78/255, green: 142/255, blue: 240/255, alpha: 1.0)
         button.setTitle("Host", for: .normal)
         button.tintColor = .white
         button.layer.cornerRadius = 12
@@ -36,7 +36,7 @@ class GameStartViewController: UIViewController {
     
     let joinButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = .blue
+        button.backgroundColor = UIColor(red: 78/255, green: 142/255, blue: 240/255, alpha: 1.0)
         button.setTitle("Join", for: .normal)
         button.tintColor = .white
         button.layer.cornerRadius = 12
@@ -58,9 +58,11 @@ class GameStartViewController: UIViewController {
         
         browserContainerView = browserController.view
         view.addSubview(browserContainerView)
+        browserContainerView.isHidden = true
         
         view.backgroundColor = .white
         setupButtons()
+        setupBrowserView()
     }
     
     func setupButtons() {
@@ -82,13 +84,7 @@ class GameStartViewController: UIViewController {
 
     }
     
-    func setupBrowserView() {
-        browserController.view.snp.makeConstraints { (make) in
-            make.width.height.equalTo(300)
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
-        }
-        
+    func setupBrowserView() {        
         browserContainerView.snp.makeConstraints { (make) in
             make.width.height.equalTo(300)
             make.centerX.equalToSuperview()
@@ -118,6 +114,9 @@ class GameStartViewController: UIViewController {
     
     @objc func joinButtonPressed() {
         gameBrowser?.refresh()
+        DispatchQueue.main.async {
+            self.browserContainerView.isHidden = !self.browserContainerView.isHidden
+        }
     }
     
     func startGame(with player: Player) {

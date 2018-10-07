@@ -14,14 +14,6 @@ import MultipeerConnectivity
 import simd
 import os.signpost
 
-enum GameState {
-    case shouldInit
-    case canStart
-    case worldMapSent
-    case tankAdded
-}
-
-
 class GameViewController: UIViewController {
     
     enum SessionState {
@@ -33,32 +25,6 @@ class GameViewController: UIViewController {
         case localizingToBoard
         case setupLevel
         case gameInProgress
-        
-        var localizedInstruction: String? {
-            guard !UserDefaults.standard.disableInGameUI else { return nil }
-            switch self {
-            case .lookingForSurface:
-                return NSLocalizedString("Find a flat surface to place the game.", comment: "")
-            case .placingBoard:
-                return NSLocalizedString("Scale, rotate or move the board.", comment: "")
-            case .adjustingBoard:
-                return NSLocalizedString("Make adjustments and tap to continue.", comment: "")
-            case .gameInProgress:
-                if UserDefaults.standard.hasOnboarded || UserDefaults.standard.spectator {
-                    return nil
-                } else {
-                    return NSLocalizedString("Move closer to a slingshot.", comment: "")
-                }
-            case .setupLevel:
-                return nil
-            case .waitingForBoard:
-                return NSLocalizedString("Synchronizing world map…", comment: "")
-            case .localizingToBoard:
-                return NSLocalizedString("Point the camera towards the table.", comment: "")
-            case .setup:
-                return nil
-            }
-        }
     }
     
     let arscnView: ARSCNView = {
@@ -105,9 +71,9 @@ class GameViewController: UIViewController {
         return label
     }()
     
-    lazy var startButton: UIButton = {
+    lazy var addButton: UIButton = {
         let button = UIButton(type: .system)
-        button.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.5)
+        button.backgroundColor = UIColor(red: 78/255, green: 142/255, blue: 240/255, alpha: 1.0)
         button.setTitle("Add", for: .normal)
         button.tintColor = .white
         button.layer.cornerRadius = 5
@@ -122,14 +88,7 @@ class GameViewController: UIViewController {
         return label
     }()
     
-    var mapHasInited: Bool = false
-    var mapProvider: MCPeerID?
-    var outputStream: OutputStream?
-    
     private let myself = UserDefaults.standard.myself
-    
-    var gameState: GameState = .shouldInit
-    var gameWorldCenterTransform: SCNMatrix4 = SCNMatrix4Identity
     
     var gameManager: GameManager? {
         didSet {
@@ -163,7 +122,7 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(arscnView)
         view.addSubview(padView)
-        view.addSubview(startButton)
+        view.addSubview(addButton)
         
         view.addSubview(sessionInfoView)
         sessionInfoView.addSubview(sessionInfoLabel)
@@ -179,67 +138,26 @@ class GameViewController: UIViewController {
         view.addSubview(overlayView!)
         view.bringSubviewToFront(overlayView!)
         
+        // joystick moved
         NotificationCenter.default.addObserver(forName: joystickNotificationName, object: nil, queue: OperationQueue.main) { (notification) in
             guard let userInfo = notification.userInfo else { return }
+            // get data from analogjoystick
             let data = userInfo["data"] as! AnalogJoystickData
             
+            // format data for sending
             let velocity = float3(Float(data.velocity.x), Float(data.velocity.y), Float(0))
             print(velocity)
+            let v = GameVelocity(vector: velocity)
+            let angular = Float(data.angular)
+            let shouldBeSent = MoveData(velocity: v, angular: angular)
             
-            //            self.newVelocity = GameVelocity(vector: velocity)
-            //            if self.oldVelocity == nil {
-            //                self.oldVelocity = self.newVelocity
-            //            }
-            //
-            //            let d = distance(self.newVelocity!.vector, self.oldVelocity!.vector)
-            //
-            //            if abs(d) > 1 {
-            //                print(self.newVelocity!)
-            //            }
-//            let angular = Float(data.angular)
+            // controll tank's movement
+            self.gameManager?.moveTank(player: self.myself, movement: shouldBeSent)
             
-            let tank = self.gameManager?.tanks.filter{ $0.owner == self.myself}
-            let tankNode = (tank?.first?.objectRootNode)!
-            
-            guard GameTime.frameCount % 2 == 0 else { return }
-            
-            tankNode.simdPosition = simd_float3(
-                tankNode.simdPosition.x + velocity.x * Float(joystickVelocityMultiplier),
-                tankNode.simdPosition.y + velocity.y * Float(joystickVelocityMultiplier),
-                tankNode.simdPosition.z - velocity.y * Float(joystickVelocityMultiplier))
-            tankNode.simdEulerAngles.y = Float(data.angular) + Float(180.0 * .pi / 180)
-            
-//            let movement = MovementData(node: tankNode, alive: true)
-//
-//            let syncMovement = MovementSyncData(packetNumber: self.stickMovement, nodeData: [movement])
-//
-//            DispatchQueue.main.async {
-//                self.gameManager?.send(gameAction: .movement(syncMovement))
-//            }
-//
-            self.stickMovement += 1
-            
-//            let x = tank.objectRootNode.position.x + movement.velocity.x * Float(joystickVelocityMultiplier)
-//            let y = tank.objectRootNode.position.y + movement.velocity.y * Float(joystickVelocityMultiplier)
-//            let z = tank.objectRootNode.position.z - movement.velocity.y * Float(joystickVelocityMultiplier)
-//
-//            let angular = movement.angular
-//
-//            tank.objectRootNode.simdPosition = float3(x, y, z)
-//            tank.objectRootNode.simdEulerAngles.y = angular + Float(180.0 * .pi / 180)
-            
-            //            let angular = Float(data.angular)
-            //            let shouldBeSent = MoveData(velocity: velocity, angular: angular)
-            
-//            let shouldBeSent = MovementSyncData
-            
-                //            let shouldBeSent = MoveData(velocity: GameVelocity(vector: velocity), angular: angular)
-                
-//                self.gameManager?.moveTank(player: self.myself, movement: shouldBeSent)
-//                DispatchQueue.main.async {
-//
-//                    self.gameManager?.send(gameAction: .joyStickMoved(shouldBeSent))
-//            }
+            // send movement data to all peer
+            DispatchQueue.main.async {
+                self.gameManager?.send(gameAction: .joyStickMoved(shouldBeSent))
+            }
         }
         
     }
@@ -290,7 +208,7 @@ class GameViewController: UIViewController {
         padView.ignoresSiblingOrder = true
     }
     
-    func startAR() {
+    func startARSession() {
         setupCamera()
         setupARView()
         initARScene()
@@ -347,35 +265,37 @@ class GameViewController: UIViewController {
         
         mappingStatusLabel.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(startButton.snp.top).offset(-20)
+            make.bottom.equalTo(addButton.snp.top).offset(-20)
         }
         
-        startButton.snp.makeConstraints { (make) in
+        addButton.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(10)
             make.right.equalToSuperview().offset(-10)
             make.bottom.equalTo(arscnView.snp.bottom).offset(-50)
             make.height.equalTo(44)
         }
-        startButton.isHidden = false
-        startButton.addTarget(self, action: #selector(addTank), for: .touchUpInside)
+        addButton.isHidden = false
+        addButton.addTarget(self, action: #selector(addTank), for: .touchUpInside)
         
     }
     
     
     @objc func addTank() {
-        startButton.isHidden = true
+        addButton.isHidden = true
         padView.isHidden = false
+        
         let tankNode = SCNNode()
-        //        tankNode.transform = self.focusSquare.worldTransform
         tankNode.simdWorldTransform = self.focusSquare.simdWorldTransform
         print(self.focusSquare.simdWorldTransform)
-        //        tankNode.position = self.focusSquare.presentation.simdWorldPosition
         
         tankNode.eulerAngles = SCNVector3(0, self.focusSquare.eulerAngles.y + 180.0 * .pi / 180, 0)
         tankNode.scale = SCNVector3(0.0002, 0.0002, 0.0002)
         
         let addTank = AddTankNodeAction(simdWorldTransform: self.focusSquare.simdWorldTransform, eulerAngles: float3(0, self.focusSquare.eulerAngles.y + 180.0 * .pi / 180, 0))
+        
+        // send add tank action to all peer
         self.gameManager?.send(addTankAction: addTank)
+        // add tank to scene
         self.gameManager?.createTank(tankNode: tankNode, owner: myself)
     }
     
@@ -456,11 +376,7 @@ class GameViewController: UIViewController {
                 configuration.initialWorldMap = worldMap
                 
                 self.arscnView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-                //                self.gameManager.scen
-                //                self.updateFocusIfNeeded()
-                //                self.updateFocusSquare(isObjectVisible: false)
-                //                self.gameManager?.resetWorld(sceneView: self.arscnView)
-                //                gameManager?.start()
+                
                 self.sessionState = .localizingToBoard
             }
         } catch {
@@ -546,9 +462,6 @@ extension GameViewController: GameManagerDelegate {
                 manager.send(boardAction: .requestBoardLocation)
             }
             guard !UserDefaults.standard.disableInGameUI else { return }
-            
-            //            self.notificationLabel.text = "You joined the game!"
-            //            self.notificationLabel.fadeInFadeOut(duration: 1.0)
         }
     }
     
@@ -568,7 +481,7 @@ extension GameViewController: GameStartViewControllerDelegate {
         gameManager = GameManager(sceneView: arscnView,
                                   session: session)
         gameManager?.start()
-        startAR()
+        startARSession()
     }
     
     func gameStartViewController(_ _: UIViewController, didPressStartSoloGameButton: UIButton) {

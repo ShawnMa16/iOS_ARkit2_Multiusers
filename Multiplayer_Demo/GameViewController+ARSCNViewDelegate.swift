@@ -38,49 +38,39 @@ extension GameViewController: ARSCNViewDelegate, ARSessionDelegate {
     private func updateSessionInfoLabel(for frame: ARFrame, trackingState: ARCamera.TrackingState) {
         // Update the UI to provide feedback on the state of the AR experience.
         let message: String
-//
-//        switch trackingState {
-//        case .normal where frame.anchors.isEmpty && multipeerSession.connectedPeers.isEmpty:
-//            // No planes detected; provide instructions for this app's AR interactions.
-//            message = "Move around to map the environment, or wait to join a shared session."
-//
-////        case .normal where !game.connectedPeers.isEmpty && mapProvider == nil:
-////            let peerNames = multipeerSession.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
-////            message = "Connected with \(peerNames)."
-//
-//        case .notAvailable:
-//            message = "Tracking unavailable."
-//
-//        case .limited(.excessiveMotion):
-//            message = "Tracking limited - Move the device more slowly."
-//
-//        case .limited(.insufficientFeatures):
-//            message = "Tracking limited - Point the device at an area with visible surface detail, or improve lighting conditions."
-//
-//        case .limited(.initializing) where mapProvider != nil,
-//             .limited(.relocalizing) where mapProvider != nil:
-//            message = "Received map from \(mapProvider!.displayName)."
-//
-//        case .limited(.relocalizing):
-//            message = "Resuming session — move to where you were when the session was interrupted."
-//
-//        case .limited(.initializing):
-//            message = "Initializing AR session."
-//
-//        default:
-//            // No feedback needed when tracking is normal and planes are visible.
-//            // (Nor when in unreachable limited-tracking states.)
-//            message = ""
-//
-//        }
-//
-//        sessionInfoLabel.text = message
-//        sessionInfoView.isHidden = message.isEmpty
+        //
+        switch trackingState {
+        case .normal where frame.anchors.isEmpty:
+            // No planes detected; provide instructions for this app's AR interactions.
+            message = "Move around to map the environment, or wait to join a shared session."
+            
+        case .notAvailable:
+            message = "Tracking unavailable."
+            
+        case .limited(.excessiveMotion):
+            message = "Tracking limited - Move the device more slowly."
+            
+        case .limited(.insufficientFeatures):
+            message = "Tracking limited - Point the device at an area with visible surface detail, or improve lighting conditions."
+            
+        case .limited(.relocalizing):
+            message = "Resuming session — move to where you were when the session was interrupted."
+            
+        case .limited(.initializing):
+            message = "Initializing AR session."
+            
+        default:
+            // when tracking is normal and planes are visible.
+            // (Nor when in unreachable limited-tracking states.)
+            message = "Tracking is normal"
+            
+        }
+        
+        sessionInfoLabel.text = message
+        sessionInfoView.isHidden = message.isEmpty
     }
     
-    
-    
-    
+        
     // MARK: - ARSCNViewDelegate
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
@@ -103,23 +93,6 @@ extension GameViewController: ARSCNViewDelegate, ARSessionDelegate {
                     "Game logic update finished")
     }
     
-    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        // should init plane here
-        //        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
-//        if let name = anchor.name, name.hasPrefix("tank") {
-//            DispatchQueue.main.async {
-//                let tank = self.loadTank()
-//                tank.scale = SCNVector3(0.0002, 0.0002, 0.0002)
-//                if self.myTank == nil {
-//                    self.myTank = tank
-//                } else {
-//                    self.otherTank = tank
-//                }
-//                node.addChildNode(tank)
-//            }
-//        }
-        
-    }
     
     // MARK: - ARSessionDelegate
     
@@ -129,14 +102,6 @@ extension GameViewController: ARSCNViewDelegate, ARSessionDelegate {
     
     /// - Tag: CheckMappingStatus
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-//        switch frame.worldMappingStatus {
-//        case .notAvailable, .limited:
-//            sendMapButton.isEnabled = false
-//        case .extending:
-//            sendMapButton.isEnabled = !multipeerSession.connectedPeers.isEmpty
-//        case .mapped:
-//            sendMapButton.isEnabled = !multipeerSession.connectedPeers.isEmpty
-//        }
         mappingStatusLabel.text = frame.worldMappingStatus.description
         updateSessionInfoLabel(for: frame, trackingState: frame.camera.trackingState)
     }
@@ -156,7 +121,6 @@ extension GameViewController: ARSCNViewDelegate, ARSessionDelegate {
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user.
         sessionInfoLabel.text = "Session failed: \(error.localizedDescription)"
-        //        resetTracking(nil)
     }
     
     func sessionShouldAttemptRelocalization(_ session: ARSession) -> Bool {

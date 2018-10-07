@@ -164,44 +164,44 @@ extension GameVelocity: BitStreamCodable {
 private let velocityCompressor = FloatCompressor(minValue: -50.0, maxValue: 50.0, bits: 16)
 private let angularVelocityAxisCompressor = FloatCompressor(minValue: -1.0, maxValue: 1.0, bits: 12)
 
-struct MoveData {
-    var velocity: float3
-    var angular: Float
-    
-    init(velocity: float3, angular: Float) {
-        self.velocity = velocity
-        self.angular = angular
-    }
-}
-
-extension MoveData: BitStreamCodable {
-    init(from bitStream: inout ReadableBitStream) throws {
-        velocity = try velocityCompressor.readFloat3(from: &bitStream)
-        angular = try angularVelocityAxisCompressor.read(from: &bitStream)
-    }
-    
-    func encode(to bitStream: inout WritableBitStream) throws {
-        velocityCompressor.write(velocity, to: &bitStream)
-        angularVelocityAxisCompressor.write(angular, to: &bitStream)
-    }
-}
-
 //struct MoveData {
-//    var velocity: GameVelocity
+//    var velocity: float3
 //    var angular: Float
+//
+//    init(velocity: float3, angular: Float) {
+//        self.velocity = velocity
+//        self.angular = angular
+//    }
 //}
 //
 //extension MoveData: BitStreamCodable {
 //    init(from bitStream: inout ReadableBitStream) throws {
-//        velocity = try GameVelocity(from: &bitStream)
-//        angular = try bitStream.readFloat()
+//        velocity = try velocityCompressor.readFloat3(from: &bitStream)
+//        angular = try angularVelocityAxisCompressor.read(from: &bitStream)
 //    }
 //
 //    func encode(to bitStream: inout WritableBitStream) throws {
-//        velocity.encode(to: &bitStream)
-//        bitStream.appendFloat(angular)
+//        velocityCompressor.write(velocity, to: &bitStream)
+//        angularVelocityAxisCompressor.write(angular, to: &bitStream)
 //    }
 //}
+
+struct MoveData {
+    var velocity: GameVelocity
+    var angular: Float
+}
+
+extension MoveData: BitStreamCodable {
+    init(from bitStream: inout ReadableBitStream) throws {
+        velocity = try GameVelocity(from: &bitStream)
+        angular = try bitStream.readFloat()
+    }
+
+    func encode(to bitStream: inout WritableBitStream) throws {
+        velocity.encode(to: &bitStream)
+        bitStream.appendFloat(angular)
+    }
+}
 
 struct AddTankNodeAction {
     var simdWorldTransform: float4x4
@@ -250,8 +250,8 @@ extension GameAction: BitStreamCodable {
         let key: CodingKey = try bitStream.readEnum()
         switch key {
         case .move:
-            let data = try MovementSyncData(from: &bitStream)
-            self = .movement(data)
+            let data = try MoveData(from: &bitStream)
+            self = .joyStickMoved(data)
         }
     }
     

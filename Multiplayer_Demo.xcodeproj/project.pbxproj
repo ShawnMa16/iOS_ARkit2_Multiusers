@@ -35,7 +35,6 @@
 		29C086A4216292E20002BFAC /* GameBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C086A3216292E20002BFAC /* GameBrowser.swift */; };
 		29C086A6216293310002BFAC /* Bundle+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C086A5216293310002BFAC /* Bundle+Helpers.swift */; };
 		29C086A82162A9BF0002BFAC /* GameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C086A72162A9BF0002BFAC /* GameCell.swift */; };
-		29F2D21D2159844B00AF7381 /* ConvientMovementData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F2D21C2159844B00AF7381 /* ConvientMovementData.swift */; };
 		29F99D372156B56C00906078 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F99D362156B56C00906078 /* AppDelegate.swift */; };
 		29F99D392156B56C00906078 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F99D382156B56C00906078 /* GameViewController.swift */; };
 		29F99D3E2156B56D00906078 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29F99D3D2156B56D00906078 /* Assets.xcassets */; };
@@ -75,7 +74,6 @@
 		29C086A3216292E20002BFAC /* GameBrowser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBrowser.swift; sourceTree = "<group>"; };
 		29C086A5216293310002BFAC /* Bundle+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Helpers.swift"; sourceTree = "<group>"; };
 		29C086A72162A9BF0002BFAC /* GameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCell.swift; sourceTree = "<group>"; };
-		29F2D21C2159844B00AF7381 /* ConvientMovementData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvientMovementData.swift; sourceTree = "<group>"; };
 		29F99D332156B56C00906078 /* Multiplayer_Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Multiplayer_Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29F99D362156B56C00906078 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		29F99D382156B56C00906078 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -105,7 +103,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		291F0B0821605A2C00EB2C9D /* Ulities */ = {
+		291F0B0821605A2C00EB2C9D /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
 				29C086A5216293310002BFAC /* Bundle+Helpers.swift */,
@@ -115,7 +113,7 @@
 				296A12742156E17C00CEA924 /* Utilities.swift */,
 				291F0B0621605A2300EB2C9D /* UserDefaults+Helpers.swift */,
 			);
-			path = Ulities;
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		291F0B0D2160614100EB2C9D /* Signpost */ = {
@@ -136,14 +134,14 @@
 			path = "Bit Stream";
 			sourceTree = "<group>";
 		};
-		295AE40D2166513500835737 /* Movement Synchronization */ = {
+		295AE40D2166513500835737 /* Movement Synchronization - not being used */ = {
 			isa = PBXGroup;
 			children = (
 				29B238172164423300CC2990 /* MovementData.swift */,
 				29B23815216440E100CC2990 /* MovementSyncData.swift */,
 				295AE40E2166567400835737 /* MovementSyncSceneData.swift */,
 			);
-			path = "Movement Synchronization";
+			path = "Movement Synchronization - not being used";
 			sourceTree = "<group>";
 		};
 		296A12732156E09A00CEA924 /* Four Square */ = {
@@ -214,15 +212,14 @@
 				29F99D362156B56C00906078 /* AppDelegate.swift */,
 				29F99D382156B56C00906078 /* GameViewController.swift */,
 				291F0B1821625B5100EB2C9D /* GameViewController+ARSCNViewDelegate.swift */,
-				29F2D21C2159844B00AF7381 /* ConvientMovementData.swift */,
 				29C086A2216292700002BFAC /* Supporting ViewController */,
-				295AE40D2166513500835737 /* Movement Synchronization */,
 				29AAD802215A949900516A80 /* Local Networking */,
 				292F9E2E21596AF500620074 /* Bit Stream */,
 				296A1278215727B400CEA924 /* Joystick */,
 				291F0B0D2160614100EB2C9D /* Signpost */,
-				291F0B0821605A2C00EB2C9D /* Ulities */,
+				291F0B0821605A2C00EB2C9D /* Utilities */,
 				296A12732156E09A00CEA924 /* Four Square */,
+				295AE40D2166513500835737 /* Movement Synchronization - not being used */,
 				296A126B2156D5A800CEA924 /* Assets.scnassets */,
 				29F99D3D2156B56D00906078 /* Assets.xcassets */,
 				29F99D3F2156B56D00906078 /* LaunchScreen.storyboard */,
@@ -383,7 +380,6 @@
 				291F0B0721605A2300EB2C9D /* UserDefaults+Helpers.swift in Sources */,
 				29B238182164423300CC2990 /* MovementData.swift in Sources */,
 				29F99D4B2156C27000906078 /* AnalogJoystick.swift in Sources */,
-				29F2D21D2159844B00AF7381 /* ConvientMovementData.swift in Sources */,
 				29C0869D21627A280002BFAC /* GameStartViewController.swift in Sources */,
 				291F0B152161AA3600EB2C9D /* simd+Helpers.swift in Sources */,
 				292F9E2C21596AEE00620074 /* BitStream.swift in Sources */,

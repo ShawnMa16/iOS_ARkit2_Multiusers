@@ -28,7 +28,7 @@ class NetworkGameBrowserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.frame = CGRect(x: 0, y: 0, width: 200, height: 200)
+        view.frame = CGRect(x: 0, y: 0, width: 300, height: 300)
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview().offset(0)

@@ -13,10 +13,6 @@ import CoreGraphics
 var joystickNotificationName = NSNotification.Name("joystickNotificationName")
 let joystickVelocityMultiplier: CGFloat = 0.00006
 
-struct Constants {
-    static let tankScenePath = "Assets.scnassets/Models/Tank.scn"
-}
-
 extension FloatingPoint {
     var degreesToRadians: Self { return self * .pi / 180 }
     var radiansToDegrees: Self { return self * 180 / .pi }

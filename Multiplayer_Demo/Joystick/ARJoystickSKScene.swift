@@ -16,7 +16,7 @@ class ARJoystickSKScene: SKScene {
     
     lazy var analogJoystick: AnalogJoystick = {
         let js = AnalogJoystick(diameter: 100, colors: nil, images: (substrate: UIImage(named: "jSubstrate"), stick: UIImage(named: "jStick")))
-        js.position = CGPoint(x: js.radius + 50, y: js.radius + 50)
+        js.position = CGPoint(x: js.radius + 40, y: js.radius + 40)
         js.zPosition = NodesZPosition.joystick.rawValue
         return js
     }()
