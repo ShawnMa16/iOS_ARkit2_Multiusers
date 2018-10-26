@@ -38,17 +38,17 @@ You are going to use two or more devices
 
 ### Host the game with one device
 
-Find and scan the ground plane
+1. Find and scan the ground plane
 
-Wait for the ARKit status label to show "Maped"
+2. Wait for the ARKit status label to show "Maped"
 
 **DO NOT ADD GAME OBJECT FOR NOW**
 
 ### Join the game 
 
-Find and scan the same ground plane
+1. Find and scan the same ground plane
 
-Wait for the ARKit status label to show "Maped" on the second device
+2. Wait for the ARKit status label to show "Maped" on the second device
 
 ### Place the game objects on all devices
 Game objects will be placed on the center of the yellow Four Square
