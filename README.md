@@ -2,6 +2,8 @@
 
 A ARKit2 multiplayer demo created and simplified based on [SwifShot Demo](https://developer.apple.com/documentation/arkit/swiftshot_creating_a_game_for_augmented_reality) 
 
+![](AR_multiuser.gif)
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your iOS devices for development and testing purposes. See deployment for notes on how to deploy the project.
